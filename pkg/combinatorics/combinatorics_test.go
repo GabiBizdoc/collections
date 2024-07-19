@@ -63,10 +63,14 @@ func TestCombinations(t *testing.T) {
 }
 
 func BenchmarkCombinatorics(b *testing.B) {
-	//data := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 6, 3, 2, 3, 4, 5, 10, 11, 12, 32, 43, 54, 45, 2, 3, 4, 5, 4}
+	//arr := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 6, 3, 2, 3, 4, 5, 10, 11, 12, 32, 43, 54, 45, 2, 3, 4, 5, 4}
 	//size := 20
 
 	data := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 6, 3, 2, 3, 4, 5, 10, 11, 12, 32, 43, 54, 45, 2, 3, 4, 5, 4}
+	//arr := make([]int, 31)
+	//for i := range arr {
+	//	arr[i] = i + 1
+	//}
 	size := 10
 
 	b.Run("GenerateAllCombinations", func(b *testing.B) {
@@ -80,12 +84,11 @@ func BenchmarkCombinatorics(b *testing.B) {
 		b.ResetTimer()
 		for range b.N {
 			iter := com.NewCombinatorPushIter(data, size)
-			iter.ForEach(func(result []int) {
-			})
+			iter.ForEach(func(result []int) {})
 		}
 	})
 
-	b.Run("yield + clone", func(b *testing.B) {
+	b.Run("yield and clone", func(b *testing.B) {
 		b.ResetTimer()
 		for range b.N {
 			iter := com.NewCombinatorPushIter(data, size)
@@ -110,7 +113,6 @@ func BenchmarkCombinatorics(b *testing.B) {
 		for range b.N {
 			iter := com.NewCombinatorPullIter(data, size)
 			for iter.Next() {
-				iter.Value()
 				slices.Clone(iter.Value())
 			}
 		}

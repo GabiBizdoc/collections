@@ -15,7 +15,8 @@ func GenerateAllCombinations[T any](arr []T, size int) [][]T {
 			return
 		}
 
-		for j := start; j < len(arr); j++ {
+		end := len(arr) + len(result) + 1 - size
+		for j := start; j < end; j++ {
 			result = append(result, arr[j])
 			backtracking(j + 1)
 			result = result[:len(result)-1]
