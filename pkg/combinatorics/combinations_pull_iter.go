@@ -2,21 +2,21 @@ package com
 
 import (
 	. "github.com/GabiBizdoc/collections/pkg/stack"
+	"slices"
 )
 
-type CombinatorPullIter[T any] struct {
-	done   bool
+type CombinatorPullIter[T ~[]E, E any] struct {
 	k      int
-	arr    []T
-	result Stack[T]
+	arr    T
+	result Stack[E]
 	stack  Stack[int]
 }
 
-func NewCombinatorPullIter[T any](arr []T, k int) *CombinatorPullIter[T] {
-	result := make([]T, 0, k)
+func NewCombinatorPullIter[T ~[]E, E any](arr T, k int) *CombinatorPullIter[T, E] {
+	result := make([]E, 0, k)
 	stack := make(Stack[int], 0, len(arr))
 
-	return &CombinatorPullIter[T]{
+	return &CombinatorPullIter[T, E]{
 		k:      k,
 		arr:    arr,
 		result: result,
@@ -24,9 +24,7 @@ func NewCombinatorPullIter[T any](arr []T, k int) *CombinatorPullIter[T] {
 	}
 }
 
-func (c *CombinatorPullIter[T]) Next() bool {
-	c.checkDone()
-
+func (c *CombinatorPullIter[T, E]) Next() bool {
 	if c.stack.IsEmpty() {
 		for i := 0; i < c.k; i++ {
 			c.stack.Push(i)
@@ -52,26 +50,13 @@ func (c *CombinatorPullIter[T]) Next() bool {
 		}
 	}
 
-	c.done = true
 	return false
 }
 
-func (c *CombinatorPullIter[T]) Value() []T {
-	c.checkDone()
-	return c.result
+func (c *CombinatorPullIter[T, E]) Value() T {
+	return T(c.result)
 }
 
-func (c *CombinatorPullIter[T]) CopyValue() []T {
-	c.checkDone()
-
-	s := make([]T, len(c.stack))
-	copy(s, c.result)
-
-	return s
-}
-
-func (c *CombinatorPullIter[T]) checkDone() {
-	if c.done {
-		panic("read after done")
-	}
+func (c *CombinatorPullIter[T, E]) CopyValue() T {
+	return slices.Clone(c.Value())
 }

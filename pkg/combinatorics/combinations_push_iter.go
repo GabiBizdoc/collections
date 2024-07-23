@@ -1,21 +1,21 @@
 package com
 
-type CombinatorPushIter[T any] struct {
-	arr []T
+type CombinatorPushIter[T ~[]E, E any] struct {
+	arr T
 	k   int
 }
 
-func NewCombinatorPushIter[T any](arr []T, k int) CombinatorPushIter[T] {
-	return CombinatorPushIter[T]{arr: arr, k: k}
+func NewCombinatorPushIter[T ~[]E, E any](arr T, k int) CombinatorPushIter[T, E] {
+	return CombinatorPushIter[T, E]{arr: arr, k: k}
 }
 
 // ForEach returns a list containing all possible combinations
 // of the specified size from the given array.
-func (c CombinatorPushIter[T]) ForEach(yield func([]T)) {
+func (c CombinatorPushIter[T, E]) ForEach(yield func(T)) {
 	arr := c.arr
 	size := c.k
 
-	result := make([]T, 0)
+	result := make(T, 0)
 
 	var backtracking func(int)
 	backtracking = func(start int) {
