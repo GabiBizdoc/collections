@@ -1,4 +1,4 @@
-package com_test
+package collections_test
 
 import (
 	com "github.com/GabiBizdoc/collections/pkg/combinatorics"

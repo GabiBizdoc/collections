@@ -1,4 +1,4 @@
-package com
+package collections
 
 type CombinatorPushIter[T ~[]E, E any] struct {
 	arr T

@@ -1,4 +1,4 @@
-package com
+package collections
 
 // GenerateAllCombinations returns a list containing all possible combinations
 // of the specified size from the given array.
